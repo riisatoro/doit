@@ -5,7 +5,7 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
 )
 from payload_forms import RegistrationForm
-
+from emails.send import send_email
 
 
 class Registration(APIView):
@@ -13,5 +13,6 @@ class Registration(APIView):
         user = RegistrationForm(request.data)
         if not user.is_valid():
             return Response({'details': user.errors.as_data()}, status=HTTP_400_BAD_REQUEST)
-        user.save()
+        user = user.save()
+        send_email(recepients=[user.email])
         return Response({}, status=HTTP_201_CREATED)
