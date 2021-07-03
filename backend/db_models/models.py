@@ -6,7 +6,7 @@ from django.db.models import (
     ForeignKey,
     SET,
 )
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 
 
 class UserType(Model):
