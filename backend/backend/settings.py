@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
+    'rest_framework', 'rest_framework_simplejwt',
     'db_models',
     'authorization',
 ]
@@ -106,3 +106,11 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=92000),
 }
+
+# MAILGUN
+MAILGUN_DOMAIN = os.getenv('MAILGUN_DOMAIN')
+MAILGUN_FROM = os.getenv('MAILGUN_FROM')
+MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
+
+SECRET_EMAIL_SALT = os.getenv('SECRET_EMAIL_SALT')
+TOKEN_EXPIRES_SECONDS = int(os.getenv('TOKEN_EXPIRES_SECONDS'))

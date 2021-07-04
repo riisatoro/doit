@@ -22,6 +22,13 @@ class RegistrationForm(ModelForm):
 
         return cleaned_data
 
+    def save(self, commit=True):
+        user = super(RegistrationForm, self).save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        if commit:
+            user.save()
+        return user
+
     class Meta:
         model = CustomUser
         fields = ['email', 'username', 'password', 'confirm_password', 'user_type']
