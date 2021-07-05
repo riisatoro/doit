@@ -8,6 +8,7 @@ from django.db.models import (
     SET,
 )
 from django.contrib.auth.models import AbstractUser
+from django.db.models.fields import TextField
 from autoslug import AutoSlugField
 
 
@@ -28,6 +29,10 @@ class CustomUser(AbstractUser):
     slug = AutoSlugField(
         max_length=100, unique=True, blank=False, null=False,  populate_from='username',
     )
+
+    avatar = CharField(blank=False, null=True, max_length=256)
+    about = TextField(blank=False, null=True, max_length=1000)
+
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
 
