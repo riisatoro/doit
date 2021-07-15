@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'db_models',
     'authorization',
     'master_data',
+    'user',
 ]
 
 MIDDLEWARE = [

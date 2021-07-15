@@ -8,7 +8,7 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED,
 )
 from payload_forms import RegistrationForm
-from emails.send import send_email
+from servises.mailgun import send_email
 from encoder import (
     encode_email_token,
     decode_email_token,

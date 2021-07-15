@@ -19,7 +19,7 @@ class UserType(Model):
 
 
 def get_or_create_user_type():
-    return UserType.objects.get_or_create(name__icontains='other')
+    return UserType.objects.get_or_create(name='other')
 
 
 class CustomUser(AbstractUser):
@@ -31,6 +31,7 @@ class CustomUser(AbstractUser):
     )
 
     avatar = CharField(blank=False, null=True, max_length=256)
+    avatar_id = CharField(blank=False, null=True, max_length=256)
     about = TextField(blank=False, null=True, max_length=1000)
 
     created_at = DateTimeField(auto_now_add=True)
