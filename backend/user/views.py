@@ -6,7 +6,7 @@ from rest_framework.status import (
 )
 from payload_forms import RegistrationForm
 from db_models.models import CustomUser
-
+from serializers.serializers import PrivateUserProfileSerializer
 from servises.cloudinary import upload_avatar
 
 
@@ -14,7 +14,8 @@ class UserProfile(APIView):
     permission_classes = [IsAuthenticated,]
 
     def get(self, request):
-        return Response({}, status=HTTP_200_OK)
+        data = PrivateUserProfileSerializer(request.user).data
+        return Response(data, status=HTTP_200_OK)
 
     def post(self, request):
         avatar_data = upload_avatar(request.FILES.get('avatar'), request.user)

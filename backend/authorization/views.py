@@ -20,10 +20,13 @@ class Registration(APIView):
     def post(self, request):
         user = RegistrationForm(request.data)
         if not user.is_valid():
-            return Response({'details': user.errors.as_data()}, status=HTTP_400_BAD_REQUEST)
+            return Response({'detail': user.errors.as_data()}, status=HTTP_400_BAD_REQUEST)
         user = user.save()
         send_email(recepients=[user.email], token=encode_email_token(user.email))
-        return Response({}, status=HTTP_201_CREATED)
+        return Response(
+            {'detail': 'You have registered successfully'},
+            status=HTTP_201_CREATED
+        )
 
 
 class Confirmation(APIView):
@@ -31,10 +34,10 @@ class Confirmation(APIView):
         try:
             email = decode_email_token(token)
         except ValueError:
-            return Response({'details': 'Token is invalid or expired'}, status=HTTP_401_UNAUTHORIZED)
+            return Response({'detail': 'Token is invalid or expired'}, status=HTTP_401_UNAUTHORIZED)
         user = CustomUser.objects.filter(email=email).first()
         if not user:
-            return Response({'details': 'Token is invalid or expired'}, status=HTTP_401_UNAUTHORIZED)
+            return Response({'detail': 'Token is invalid or expired'}, status=HTTP_401_UNAUTHORIZED)
         user.is_active = True
         user.save()
-        return Response({}, status=HTTP_200_OK)
+        return Response({'detail': 'Your have confirmed your account successfully'}, status=HTTP_200_OK)
