@@ -19,13 +19,20 @@ class UserType(Model):
 
 
 def get_or_create_user_type():
-    return UserType.objects.get_or_create(name='other')
+    user_type, created = UserType.objects.get_or_create(name='other')
+    return user_type.id
 
 
 class CustomUser(AbstractUser):
     username = CharField(blank=False, null=False, unique=True, max_length=50)
     email = EmailField(blank=False, null=False, unique=True)
-    user_type = ForeignKey(to=UserType, blank=False, null=False, on_delete=SET(get_or_create_user_type))
+    user_type = ForeignKey(
+        to=UserType,
+        blank=False,
+        null=False,
+        on_delete=SET(get_or_create_user_type),
+        default=get_or_create_user_type()
+    )
     slug = AutoSlugField(
         max_length=100, unique=True, blank=False, null=False,  populate_from='username',
     )
