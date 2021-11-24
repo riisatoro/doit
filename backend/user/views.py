@@ -7,7 +7,7 @@ from rest_framework.status import (
 from payload_forms import RegistrationForm
 from db_models.models import CustomUser
 from serializers.serializers import PrivateUserProfileSerializer
-from servises.cloudinary import upload_avatar
+from services.cloudinary import upload_avatar
 
 
 class UserProfile(APIView): 
