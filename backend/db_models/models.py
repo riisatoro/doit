@@ -4,8 +4,7 @@ from django.db.models import (
     EmailField,
     DateTimeField,
     ForeignKey,
-    SlugField,
-    SET,
+    SET_NULL,
 )
 from django.contrib.auth.models import AbstractUser
 from django.db.models.fields import TextField
@@ -18,21 +17,10 @@ class UserType(Model):
     updated_at = DateTimeField(auto_now=True)
 
 
-def get_or_create_user_type():
-    user_type, created = UserType.objects.get_or_create(name='other')
-    return user_type.id
-
-
 class CustomUser(AbstractUser):
     username = CharField(blank=False, null=False, unique=True, max_length=50)
     email = EmailField(blank=False, null=False, unique=True)
-    user_type = ForeignKey(
-        to=UserType,
-        blank=False,
-        null=False,
-        on_delete=SET(get_or_create_user_type),
-        default=get_or_create_user_type()
-    )
+    user_type = ForeignKey(to=UserType, blank=False, null=True, on_delete=SET_NULL)
     slug = AutoSlugField(
         max_length=100, unique=True, blank=False, null=False,  populate_from='username',
     )
