@@ -18,3 +18,11 @@ class PrivateUserProfileSerializer(ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'user_type', 'slug', 'avatar', 'about']
+
+
+class PublicUserProfileSerializer(ModelSerializer):
+    user_type = UserTypeSerializer()
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'user_type', 'slug', 'avatar', 'about']

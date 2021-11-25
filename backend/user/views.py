@@ -6,12 +6,12 @@ from rest_framework.status import (
 )
 from payload_forms import RegistrationForm
 from db_models.models import CustomUser
-from serializers.serializers import PrivateUserProfileSerializer
+from serializers.serializers import PrivateUserProfileSerializer, PublicUserProfileSerializer
 from services.cloudinary import upload_avatar
 
 
 class UserProfile(APIView): 
-    permission_classes = [IsAuthenticated,]
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         data = PrivateUserProfileSerializer(request.user).data
@@ -24,3 +24,13 @@ class UserProfile(APIView):
             about=about, avatar=avatar_data['url'], avatar_id=avatar_data['media_id']
         )
         return Response({}, status=HTTP_200_OK)
+
+
+class PublicProfile(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, user_slug):
+        user = CustomUser.objects.filter(slug=user_slug).first()
+        data = PublicUserProfileSerializer(user).data
+        return Response(data, status=HTTP_200_OK)
+
