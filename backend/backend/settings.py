@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'authorization',
     'master_data',
     'user',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
