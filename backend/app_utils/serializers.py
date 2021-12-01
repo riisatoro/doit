@@ -1,10 +1,7 @@
-from django.db.models import fields
-from django.db.models.base import Model
 from rest_framework.serializers import ModelSerializer
-from db_models.models import (
-    UserType,
-    CustomUser,
-)
+
+from app_utils.models import UserType, CustomUser
+
 
 class UserTypeSerializer(ModelSerializer):
     class Meta:

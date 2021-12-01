@@ -1,4 +1,3 @@
-from os import stat
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -7,13 +6,11 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
     HTTP_401_UNAUTHORIZED,
 )
-from payload_forms import RegistrationForm
-from services.mailgun import send_email
-from encoder import (
-    encode_email_token,
-    decode_email_token,
-)
-from db_models.models import CustomUser
+
+from app_utils.encoder import encode_email_token, decode_email_token
+from app_utils.forms import RegistrationForm
+from app_utils.models import CustomUser
+from app_utils.services.mailgun import send_email
 
 
 class Registration(APIView):

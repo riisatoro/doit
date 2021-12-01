@@ -4,7 +4,7 @@ from django.forms import (
     CharField,
     PasswordInput,
 )
-from db_models.models import (
+from app_utils.models import (
     CustomUser,
 )
 

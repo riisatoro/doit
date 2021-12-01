@@ -25,11 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', 
     'rest_framework_simplejwt',
-    'db_models',
+    'app_utils',
+
     'authorization',
     'master_data',
     'user',
-    'dashboard',
+    'stock',
 ]
 
 MIDDLEWARE = [
@@ -102,7 +103,7 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'db_models.CustomUser'
+AUTH_USER_MODEL = 'app_utils.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

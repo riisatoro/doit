@@ -1,13 +1,12 @@
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.status import (
-    HTTP_200_OK,
-)
-from payload_forms import RegistrationForm
-from db_models.models import CustomUser
-from serializers.serializers import PrivateUserProfileSerializer, PublicUserProfileSerializer
-from services.cloudinary import upload_avatar
+from rest_framework.status import HTTP_200_OK
+
+from app_utils.forms import RegistrationForm
+from app_utils.models import CustomUser
+from app_utils.serializers import PrivateUserProfileSerializer, PublicUserProfileSerializer
+from app_utils.services.cloudinary import upload_avatar
 
 
 class UserProfile(APIView): 

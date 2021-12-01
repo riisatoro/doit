@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
     slug = AutoSlugField(
         max_length=100, unique=True, blank=False, null=False,  populate_from='username',
     )
-    money = IntegerField()
+    money = IntegerField(default=0)
 
     avatar = CharField(blank=True, null=True, max_length=256)
     avatar_id = CharField(blank=True, null=True, max_length=256)
@@ -98,7 +98,6 @@ class StockOrder(ModelMixin):
     title = CharField(max_length=255, blank=False, null=False)
     description = TextField()
     slug = AutoSlugField(max_length=150, unique=True, blank=False, null=False, populate_from='title')
-    # attachments = ManyToManyField(to='StockOrderAttachments', related_name='attachments')
     order_status = CharField(max_length=30, choices=OrderStatus.status_list)
     author = ForeignKey(to='CustomUser', on_delete=CASCADE, blank=False, null=False, related_name='stock_author')
     executor = ForeignKey(to='CustomUser', on_delete=CASCADE, blank=True, null=True, related_name='stock_executor')
