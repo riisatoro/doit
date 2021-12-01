@@ -4,7 +4,7 @@ from db_models.models import *
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'user_type', 'slug',)
+    list_display = ('username', 'email', 'user_type', 'slug', 'money',)
 
 @admin.register(UserType)
 class UserTypeAdmin(admin.ModelAdmin):
@@ -14,7 +14,7 @@ class UserTypeAdmin(admin.ModelAdmin):
 class StockOrderApplicantAdmin(admin.ModelAdmin):
     list_display = ('applicant', 'order', 'message',)
 
-@admin.register(StockOrderTags)
+@admin.register(StockOrderTag)
 class StockOrderTagsAdmin(admin.ModelAdmin):
     fileds = ('title', 'description',)
 
@@ -24,5 +24,5 @@ class StockOrder(admin.ModelAdmin):
         'title', 'description', 'order_status', 'author', 'executor',
         'price', 'due_date',
     )
-
+    readonly_fields = ('slug',)
     filter_horizontal = ('tags',)

@@ -9,7 +9,7 @@ from django.db.models import (
     CASCADE,
 )
 from django.contrib.auth.models import AbstractUser
-from django.db.models.fields import IntegerField, TextField
+from django.db.models.fields import IntegerField, SlugField, TextField
 from django.db.models.fields.related import ManyToManyField
 from autoslug import AutoSlugField
 
@@ -39,6 +39,7 @@ class CustomUser(AbstractUser):
     slug = AutoSlugField(
         max_length=100, unique=True, blank=False, null=False,  populate_from='username',
     )
+    money = IntegerField()
 
     avatar = CharField(blank=True, null=True, max_length=256)
     avatar_id = CharField(blank=True, null=True, max_length=256)
@@ -96,6 +97,7 @@ class StockOrder(ModelMixin):
 
     title = CharField(max_length=255, blank=False, null=False)
     description = TextField()
+    slug = AutoSlugField(max_length=150, unique=True, blank=False, null=False, populate_from='title')
     # attachments = ManyToManyField(to='StockOrderAttachments', related_name='attachments')
     order_status = CharField(max_length=30, choices=OrderStatus.status_list)
     author = ForeignKey(to='CustomUser', on_delete=CASCADE, blank=False, null=False, related_name='stock_author')
