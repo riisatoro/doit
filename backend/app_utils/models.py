@@ -8,6 +8,7 @@ from django.db.models import (
     SET_NULL,
     CASCADE,
 )
+from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 from django.db.models.fields import IntegerField, SlugField, TextField
 from django.db.models.fields.related import ManyToManyField
@@ -53,6 +54,15 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    @property
+    def name(self):
+        name = f'{self.first_name} {self.last_name}'
+        return name if name != ' ' else self.username
+
+    @property
+    def url(self):
+        return reverse('profile', kwargs={'user_slug': self.slug})
 
 
 class StockOrderApplicant(ModelMixin):
@@ -105,6 +115,10 @@ class StockOrder(ModelMixin):
     tags = ManyToManyField(to='StockOrderTag', blank=True)
     price = IntegerField()
     due_date = DateTimeField(blank=True, null=True)
+
+    @property
+    def url(self):
+        return reverse('order_details', kwargs={'slug': self.slug})
 
     def __str__(self):
         return f'[{self.order_status}] {self.title} from {self.author}'
