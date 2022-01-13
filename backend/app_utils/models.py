@@ -97,8 +97,9 @@ class Order(ModelMixin):
     due_date = DateTimeField(blank=True, null=True)
 
     @property
-    def url(self):
-        return reverse('orders', kwargs={'slug': self.slug})
+    def tag_list(self):
+        tags = self.tags.all().values_list('title', flat=True)
+        return ', '.join(tags)
 
     @property
     def executors(self):
@@ -106,4 +107,4 @@ class Order(ModelMixin):
         return '???'
 
     def __str__(self):
-        return f'[{self.order_status}] {self.title} from {self.author}'
+        return f'{self.title} +{self.rating}'
