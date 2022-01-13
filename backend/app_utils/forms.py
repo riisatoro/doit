@@ -1,9 +1,11 @@
-from django.db.models import fields
 from django.forms import (
     ModelForm,
     CharField,
     PasswordInput,
+    CheckboxSelectMultiple,
 )
+from django.forms.fields import MultipleChoiceField
+from django.forms.models import ModelChoiceField
 from app_utils.models import (
     CustomUser,
 )
@@ -32,4 +34,4 @@ class RegistrationForm(ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'username', 'password', 'confirm_password', 'user_type']
+        fields = ['email', 'username', 'password', 'confirm_password',]

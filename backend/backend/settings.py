@@ -26,11 +26,8 @@ INSTALLED_APPS = [
     'rest_framework', 
     'rest_framework_simplejwt',
     'app_utils',
-
     'authorization',
-    'master_data',
-    'user',
-    'stock',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -65,12 +62,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'doit.db'),
     }
 }
 
