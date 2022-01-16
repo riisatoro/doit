@@ -10,10 +10,10 @@ from django.db.models import (
     OneToOneField,
     Manager,
 )
-from django.forms.fields import BooleanField
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
-from django.db.models.fields import IntegerField, SlugField, TextField
+from django.contrib import admin
+from django.db.models.fields import IntegerField, SlugField, TextField, BooleanField
 from django.db.models.fields.related import ManyToManyField
 from autoslug import AutoSlugField
 
@@ -29,9 +29,9 @@ class ModelMixin(Model):
 class MediaStorage(ModelMixin):
     '''Store all media, as avatar & proof for task'''
 
-    avatar = CharField(blank=True, null=True, max_length=256)
-    avatar_id = CharField(blank=True, null=True, max_length=256)
-    content_type = CharField(max_length=255, blank=True, null=True)
+    title = CharField(max_length=255)
+    document = FileField()
+    content_type = CharField(max_length=100)
 
 
 class CustomUser(AbstractUser, ModelMixin):
@@ -59,18 +59,6 @@ class OrderTag(ModelMixin):
         return self.title
 
 
-class OrdersForReviewManager(Manager):
-    def get_queryset(self):
-        query = super().get_queryset()
-        return query.exclude(image=None).filter(approved=False)
-
-
-class FinishedOrderswManager(Manager):
-    def get_queryset(self):
-        query = super().get_queryset()
-        return query.exclude(image=None).filter(approved=True)
-
-
 class OrderApplicant(ModelMixin):
     '''User order execution info and status'''
 
@@ -80,11 +68,14 @@ class OrderApplicant(ModelMixin):
     applicant = ForeignKey(to='CustomUser', on_delete=CASCADE)
     order = ForeignKey(to='Order', on_delete=CASCADE)
     media = ManyToManyField(to='MediaStorage', related_name='media', blank=True)
-    is_approved = BooleanField()
+    is_approved = BooleanField(default=False)
     
-    objects = Manager()
-    on_review = OrdersForReviewManager()
-    approved = FinishedOrderswManager()
+    @admin.display(boolean=True)
+    def review_required(self):
+        return self.media.exists() and not self.is_approved
+
+    def __str__(self):
+        return f'{self.applicant} works on "{self.order}"'
 
 
 class Order(ModelMixin):
@@ -114,4 +105,4 @@ class Order(ModelMixin):
         return '???'
 
     def __str__(self):
-        return f'{self.title} +{self.rating}'
+        return f'{self.title} [{self.rating}]'

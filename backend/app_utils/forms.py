@@ -7,7 +7,7 @@ from django.forms import (
 from django.forms.fields import MultipleChoiceField
 from django.forms.models import ModelChoiceField
 from app_utils.models import (
-    CustomUser,
+    CustomUser, MediaStorage,
 )
 
 

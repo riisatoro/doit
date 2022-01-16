@@ -18,19 +18,20 @@ def delete_media(public_id: str):
     cloudinary.api.delete_resources([public_id])
 
 
-def upload_avatar(avatar, user):
-    if not avatar:
+def upload_media(media, user):
+    if not media:
         return
 
-    if user.avatar_id:
-        delete_media(user.avatar_id)
+    import ipdb; ipdb.set_trace()
 
     result = cloudinary.uploader.upload(
-        avatar,
-        folder=os.getenv('STORAGE_AVATAR_FOLDER'),
+        media.file,
+        folder=os.getenv('STORAGE_MEDIA_FOLDER'),
     )
+
 
     return {
         'url': result['secure_url'],
-        'media_id': result['public_id']
+        'media_id': result['public_id'],
+        'content_type': 'application/png',
     }

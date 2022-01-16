@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework', 
     'rest_framework_simplejwt',
+    'storages',
     'app_utils',
     'authorization',
     'orders',
@@ -92,8 +93,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATIC_URL = '/static/'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'app_utils.CustomUser'
@@ -117,3 +116,18 @@ MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
 
 SECRET_EMAIL_SALT = os.getenv('SECRET_EMAIL_SALT')
 TOKEN_EXPIRES_SECONDS = int(os.getenv('TOKEN_EXPIRES_SECONDS'))
+
+
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = 'public-read'
+DEFAULT_FILE_STORAGE ='storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_S3_REGION_NAME}/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' 

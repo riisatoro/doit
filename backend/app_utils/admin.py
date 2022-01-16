@@ -16,3 +16,14 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(OrderTag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('title', 'description',)
+
+
+@admin.register(OrderApplicant)
+class OrderApplicantAdmin(admin.ModelAdmin):
+    list_display = ('applicant', 'order','is_approved', 'review_required',)
+    filter_horizontal = ('media',)
+
+
+@admin.register(MediaStorage)
+class MediaStorageAdmin(admin.ModelAdmin):
+    list_display = ('title', 'document', 'content_type',)

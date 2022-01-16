@@ -1,3 +1,4 @@
+from os import stat
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.views import APIView, Response
@@ -5,8 +6,9 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
-from app_utils.models import Order, OrderApplicant
+from app_utils.models import Order, OrderApplicant, MediaStorage
 from app_utils.serializers import OrderSerializer
+from app_utils.services.cloudinary import upload_media
 
 
 class OrderView(ListAPIView):
@@ -39,5 +41,12 @@ class SendApproveOrderView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, slug):
-        
-        return Response({})
+        order = get_object_or_404(Order, slug=slug)
+        application = get_object_or_404(OrderApplicant, order=order, applicant=request.user)
+        if application.review_required():
+            return Response({'detail': 'You already submited a media files'}, status=HTTP_400_BAD_REQUEST)
+
+        for file in request.FILES.getlist('file'):
+            instance = MediaStorage.objects.create(title=file.name, document=file, content_type=file.content_type)
+            application.media.add(instance)
+        return Response({'detail': 'ok'})
