@@ -17,4 +17,4 @@ class UserDetails(ModelSerializer):
 class OrderSerializer(ModelSerializer):
     class Meta:
         model = Order
-        fields = ['title','rating']
+        fields = ['title', 'rating', 'url']

@@ -76,10 +76,9 @@ class OrderApplicant(ModelMixin):
 
     applicant = ForeignKey(to='CustomUser', on_delete=CASCADE)
     order = ForeignKey(to='Order', on_delete=CASCADE)
-    image = OneToOneField(to='MediaStorage', on_delete=CASCADE, null=True, blank=True)
+    media = ManyToManyField(to='MediaStorage', related_name='media', blank=True)
+    is_approved = BooleanField()
     
-
-    approved = BooleanField()
     on_review = OrdersForReviewManager()
     approved = FinishedOrderswManager()
 
@@ -90,7 +89,7 @@ class Order(ModelMixin):
     title = CharField(max_length=255, blank=False, null=False)
     slug = AutoSlugField(max_length=150, unique=True, blank=False, null=False, populate_from='title')
     rating = IntegerField()
-    applicants = ManyToManyField(to='CustomUser', through=OrderApplicant, related_name='applicants', blank=True, null=True)
+    applicants = ManyToManyField(to='CustomUser', through=OrderApplicant, related_name='applicants', blank=True)
     tags = ManyToManyField(to=OrderTag, related_name='tags', blank=False, null=False)
 
     is_special = BooleanField()
@@ -100,6 +99,10 @@ class Order(ModelMixin):
     def tag_list(self):
         tags = self.tags.all().values_list('title', flat=True)
         return ', '.join(tags)
+
+    @property
+    def url(self):
+        return reverse('order_details', kwargs={'slug': self.slug})
 
     @property
     def executors(self):
