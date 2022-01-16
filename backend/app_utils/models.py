@@ -74,11 +74,15 @@ class FinishedOrderswManager(Manager):
 class OrderApplicant(ModelMixin):
     '''User order execution info and status'''
 
+    class Meta:
+        unique_together = ('applicant', 'order')
+
     applicant = ForeignKey(to='CustomUser', on_delete=CASCADE)
     order = ForeignKey(to='Order', on_delete=CASCADE)
     media = ManyToManyField(to='MediaStorage', related_name='media', blank=True)
     is_approved = BooleanField()
     
+    objects = Manager()
     on_review = OrdersForReviewManager()
     approved = FinishedOrderswManager()
 
@@ -90,7 +94,7 @@ class Order(ModelMixin):
     slug = AutoSlugField(max_length=150, unique=True, blank=False, null=False, populate_from='title')
     rating = IntegerField()
     applicants = ManyToManyField(to='CustomUser', through=OrderApplicant, related_name='applicants', blank=True)
-    tags = ManyToManyField(to=OrderTag, related_name='tags', blank=False, null=False)
+    tags = ManyToManyField(to=OrderTag, related_name='tags', blank=False)
 
     is_special = BooleanField()
     due_date = DateTimeField(blank=True, null=True)
