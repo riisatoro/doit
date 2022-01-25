@@ -57,7 +57,6 @@ function Register() {
         Object.keys(detail).forEach((key) => {
           setFieldError(key, detail[key][0][0]);
         });
-        setErrors(FormikErrors);
       })
     },
   })
