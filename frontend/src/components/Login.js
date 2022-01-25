@@ -3,24 +3,15 @@ import axios from "axios";
 import { useFormik } from "formik";
 import InputWidget from "./InputWidget";
 import { Link } from "react-router-dom";
-import { LOGIN_URL } from "../utils/urls";
-import { useNavigate } from 'react-router-dom';
+import { LOGIN_URL } from "../constants/urls";
+import { loginInitial } from "../formik/initialValues";
+import { loginValidation } from "../formik/validationSchema";
+import { loginGenerator } from '../formik/formGenerators';
 
 function Login() {
-
-    const formFields =[
-        {
-            name: 'username',
-            type: 'text',
-        },
-        {
-            name: 'password',
-            type: 'password',
-        }
-    ]
-
     const formik = useFormik({
-        initialValues: {username: '', password: ''},
+        initialValues: loginInitial,
+        validationSchema: loginValidation,
         onSubmit: (data) => {
             axios.post(LOGIN_URL(), data)
             .then((response) => {console.log(response)})
@@ -37,7 +28,7 @@ function Login() {
             <h2>Login</h2>
             <form className='row registration-block d-flex align-items-center' onSubmit={formik.handleSubmit}>
             <div className='col-8'>
-            {formFields.map(
+            {loginGenerator.map(
                 (field) => <InputWidget key={field.name} {...{...field, handleChange: formik.handleChange, value: formik.values[field.name], error: formik.errors[field.name]}} />
             )}
             <div className='form-group'>

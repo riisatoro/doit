@@ -4,52 +4,18 @@ import '../styles/registration.css';
 import AvatarEditor from 'react-avatar-editor'
 import { useFormik } from 'formik';
 import axios from "axios";
-import { GRAVATAR_URL, REGISTRATION_URL } from '../utils/urls';
+import { GRAVATAR_URL, REGISTRATION_URL } from '../constants/urls';
 import InputWidget from "./InputWidget";
-import * as Yup from 'yup';
+import { registerValidation } from "../formik/validationSchema";
+import { registrationInitial } from "../formik/initialValues";
+import { registrationGenerator } from '../formik/formGenerators';
 
 function Register() {
   const [image, setImage] = useState('');
-  const formFields = [
-    {
-      name: 'username',
-      type: 'text'
-    },
-    {
-      name: 'email',
-      type: 'email'
-    },
-    {
-      name: 'password',
-      type: 'password'
-    },
-    {
-      name: 'confirm_password',
-      type: 'password'
-    },
-  ]
-
-  const formValidation = Yup.object().shape({
-    username: Yup.string()
-      .min(5, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    email: Yup.string()
-      .email()
-      .required('Required'),
-    password: Yup.string()
-      .min(8, 'Too Short!')
-      .required('Required'),
-    confirm_password: Yup.string()
-      .min(8, 'Too Short!')
-      .required('Required'),
-  });
 
   const formik = useFormik({
-    initialValues: {
-      username:'', email: '', password: '', confirm_password: '', avatar: '',
-    },
-    validationSchema: formValidation,
+    initialValues: registrationInitial,
+    validationSchema: registerValidation,
     onSubmit: (values, {setFieldError}) => {
       axios.post(REGISTRATION_URL(), values)
       .then((response) => console.log(response))
@@ -63,7 +29,6 @@ function Register() {
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
-    formik.handleChange(e);
   }
 
   return (
@@ -71,7 +36,7 @@ function Register() {
       <h2>Registration</h2>
       <form className='row registration-block d-flex align-items-center' onSubmit={formik.handleSubmit}>
         <div className='col-8'>
-          {formFields.map(
+          {registrationGenerator.map(
             (field) => <InputWidget key={field.name} {...{...field, handleChange: formik.handleChange, value: formik.values[field.name], error: formik.errors[field.name]}} />
           )}
           <div className='form-group'>
