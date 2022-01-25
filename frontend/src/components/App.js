@@ -6,15 +6,18 @@ import {
 import Main from './Main';
 import Login from './Login';
 import Register from './Register';
-
+import Header from './Header';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Main />} /> 
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-    </Routes>
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Main />} /> 
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </div>
   );
 }
 
