@@ -1,27 +1,22 @@
-import React from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { useFormik } from "formik";
 import InputWidget from "./InputWidget";
-import { Link } from "react-router-dom";
-import { LOGIN_URL } from "../constants/urls";
+import { Link, Navigate } from "react-router-dom";
 import { loginInitial } from "../formik/initialValues";
 import { loginValidation } from "../formik/validationSchema";
 import { loginGenerator } from '../formik/formGenerators';
+import { AuthContext } from '../context/AuthContext';
 
 function Login() {
+    const { login, isAuthenticated } = useContext(AuthContext);
+
     const formik = useFormik({
         initialValues: loginInitial,
         validationSchema: loginValidation,
-        onSubmit: (data) => {
-            axios.post(LOGIN_URL(), data)
-            .then((response) => {console.log(response)})
-            .catch(({response: {data: {detail}}}) => {
-                Object.keys(detail).forEach((key) => {
-                  formik.setFieldError(key, detail[key]);
-                })
-              })
-        }
+        onSubmit: login,
     })
+
+    if (isAuthenticated) return <Navigate to='/' />
 
     return (
         <div className='container'>

@@ -2,11 +2,11 @@ import * as Yup from 'yup';
 
 const loginFormShape = {
     username: Yup.string()
-    .min(5, 'Too Short!')
+    .min(1, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
     password: Yup.string()
-    .min(8, 'Too Short!')
+    .min(1, 'Too Short!')
     .required('Required'),
 };
 
