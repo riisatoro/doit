@@ -8,9 +8,7 @@ const TOKEN_NAME = 'refresh-auth-token';
 
 export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState();
-  const [refreshToken, setRefreshToken] = useState(
-      window.localStorage.getItem(TOKEN_NAME)
-  )
+  const [refreshToken, setRefreshToken] = useState(window.localStorage.getItem(TOKEN_NAME))
   const [isAuthenticated, setIsAuthenticated] = useState(Boolean(accessToken));
 
   const apiBase = axios.create({
