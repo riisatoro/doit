@@ -27,10 +27,7 @@ export const AuthProvider = ({ children }) => {
     saveRefresh(refresh);
   }
 
-  const login = (data) => {
-    axios.post(LOGIN_URL(), data=data)
-    .then(updateTokens)
-  }
+  const login = (data) => axios.post(LOGIN_URL(), data).then(updateTokens);
 
   const logout = () => {
     window.localStorage.setItem(TOKEN_NAME, null);
@@ -41,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
   const getNewAccessToken = () => {
     axios.post(REFRESH_ACCESS_TOKEN_URL(), {refresh: refreshToken})
-    .then(({data: {access}})=>{
+    .then(({data: {access}}) => {
         setAccessToken(access);
         setIsAuthenticated(true);
     })
