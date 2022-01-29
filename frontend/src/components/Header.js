@@ -3,11 +3,13 @@ import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 function Header() {
-    const { isAuthenticated, logout } = useContext(AuthContext);
+    const { isAuthenticated, user,  logout } = useContext(AuthContext);
 
     if (isAuthenticated) {
         return (
             <div>
+                <img src={user?.avatar?.url}></img>
+                <p>Welcome, {user?.username}</p>
                 <Link to='/' onClick={logout}>Logout</Link>
             </div>
         )
