@@ -5,13 +5,21 @@ from rest_framework.serializers import ModelSerializer, CharField
 from app_utils.models import (
     CustomUser,
 )
-from app_utils.models import Order
+from app_utils.models import Order, MediaStorage
 
 
-class UserDetails(ModelSerializer):
+class MediaStorageSerializer(ModelSerializer):
+    class Meta:
+        model = MediaStorage
+        fields = ['url', 'title',]
+
+
+class UserDetailsSerializer(ModelSerializer):
+    avatar = MediaStorageSerializer()
+
     class Meta:
         model = CustomUser
-        fields = ['username', 'url', 'avatar']
+        fields = ['username', 'url', 'avatar',]
 
 
 class OrderSerializer(ModelSerializer):

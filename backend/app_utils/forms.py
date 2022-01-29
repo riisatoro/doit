@@ -1,4 +1,6 @@
+import ipaddress
 from django.forms import (
+    FileField,
     ModelForm,
     CharField,
     PasswordInput,
@@ -24,9 +26,10 @@ class RegistrationForm(ModelForm):
 
         return cleaned_data
 
-    def save(self, commit=True):
+    def save(self, commit=True, avatar=None):
         user = super(RegistrationForm, self).save(commit=False)
         user.is_active = False
+        user.avatar = avatar
         user.set_password(self.cleaned_data["password"])
         if commit:
             user.save()

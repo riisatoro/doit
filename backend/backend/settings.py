@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'app_utils',
     'authorization',
     'orders',
+    'users',
 ]
 
 MIDDLEWARE = [

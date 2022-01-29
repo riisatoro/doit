@@ -33,6 +33,10 @@ class MediaStorage(ModelMixin):
     document = FileField()
     content_type = CharField(max_length=100)
 
+    @property
+    def url(self):
+        return self.document.storage.url(self.document.name)
+
 
 class CustomUser(AbstractUser, ModelMixin):
     '''Defines the custom user model, with additional fields'''
