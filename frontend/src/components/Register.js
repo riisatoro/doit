@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import '../styles/registration.css';
 import AvatarEditor from 'react-avatar-editor'
@@ -60,12 +60,15 @@ function Register() {
 
   const handleImageChange = (e) => setImage(e.target.files[0]);
 
-  return (
-    <div className='container'>
-      <h2>Registration</h2>
-      <form className='row registration-block d-flex align-items-center' onSubmit={formik.handleSubmit}>
+  if (registrationInfo) return (
         <h3>{registrationInfo}</h3>
+  )
+
+  return (
+    <div>
+      <form className='row registration-block d-flex align-items-center' onSubmit={formik.handleSubmit}>                
         <div className='col-8'>
+          <h2>Registration</h2>
           {registrationGenerator.map(
             (field) => <InputWidget key={field.name} {...{...field, handleChange: formik.handleChange, value: formik.values[field.name], error: formik.errors[field.name]}} />
           )}
@@ -76,7 +79,7 @@ function Register() {
           </div>
           <button type='submit' className="btn btn-primary">Register</button>
         </div>
-        <div className='col-4'>
+        <div className='col-4 justify-content-center'>
           <AvatarEditor
             ref={setImageRef}
             image={image || GRAVATAR_URL('awdawd')}
