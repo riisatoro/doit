@@ -51,8 +51,7 @@ class CustomUser(AbstractUser, ModelMixin):
 
     @property
     def url(self):
-        # return reverse('profile', kwargs={'user_slug': self.slug})
-        return self.slug
+        return reverse('profile', kwargs={'slug': self.slug})
 
 
 class OrderTag(ModelMixin):
