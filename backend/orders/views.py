@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from rest_framework.views import APIView, Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
@@ -14,19 +15,29 @@ from app_utils.services.cloudinary import upload_media
 
 class OrderView(ListAPIView):
     permission_classes = (IsAuthenticated,)
-    queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
     def list(self, request):
         search_tags = request.query_params.getlist('tags')
+        queryset = Order.objects.exclude(applicants=request.user).order_by('-created_at')
 
         if search_tags:
             tags_query = OrderTag.objects.filter(reduce(operator.and_, [Q(title__icontains=tag) for tag in search_tags]))
-            queryset = self.get_queryset()
             queryset = queryset.filter(tags__in=tags_query)
+            
 
         serializer = self.serializer_class(queryset, many=True)
-        return Response(serializer.data)
+        page = self.paginate_queryset(serializer.data)
+        return self.get_paginated_response(page)
+
+
+class PinnedOrderView(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = OrderSerializer
+    pagination_class = LimitOffsetPagination
+
+    def get_queryset(self):
+        return Order.objects.filter(applicants=self.request.user).order_by('-created_at')
 
 
 class SingleOrderView(RetrieveAPIView):

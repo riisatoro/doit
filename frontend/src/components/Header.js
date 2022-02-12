@@ -10,7 +10,7 @@ function Header() {
     return (
       <div className="mt-1 d-flex justify-content-between align-items-center">
         <h2>GLOBE ADVENTURE</h2>
-        <div class="dropdown d-flex justify-content-end">
+        <div className="dropdown d-flex justify-content-end">
           <span 
             className="dropdown-toggle" 
             type="button" 
@@ -38,7 +38,7 @@ function Header() {
         <div>
           <Link className='btn btn-success' to='/register'>Register</Link>
           &nbsp;
-          <Link class='btn btn-primary' to='/login'>Login</Link>
+          <Link className='btn btn-primary' to='/login'>Login</Link>
         </div>
     </div>
   )

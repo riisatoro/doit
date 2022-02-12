@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     baseURL: 'http://localhost:3000',
     proxy: 'http://localhost:8000',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      'Authorization':  `Bearer ${accessToken}`,
       'Content-Type': 'multipart/form-data'
     },
   })

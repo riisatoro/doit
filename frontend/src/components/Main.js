@@ -1,10 +1,15 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import OrderList from "./OrderList";
+import PinnedOrders from './PinnedOrders';
 
 function Main() {
 
     return (
-        <div></div>
+        <div>
+            <PinnedOrders />
+            <OrderList />
+        </div>
     )
 
 }
