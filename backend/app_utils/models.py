@@ -89,8 +89,9 @@ class Order(ModelMixin):
     rating = IntegerField()
     applicants = ManyToManyField(to='CustomUser', through=OrderApplicant, related_name='applicants', blank=True)
     tags = ManyToManyField(to=OrderTag, related_name='tags', blank=False)
+    description = CharField(max_length=1500, blank=True, null=True)
 
-    is_special = BooleanField()
+    is_special = BooleanField(default=False)
     due_date = DateTimeField(blank=True, null=True)
 
     @property
