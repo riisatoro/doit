@@ -60,9 +60,7 @@ function Register() {
 
   const handleImageChange = (e) => setImage(e.target.files[0]);
 
-  if (registrationInfo) return (
-        <h3>{registrationInfo}</h3>
-  )
+  if (registrationInfo) return (<h3>{registrationInfo}</h3>)
 
   return (
     <div>

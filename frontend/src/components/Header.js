@@ -22,7 +22,7 @@ function Header() {
             <img className="header-avatar" src={user?.avatar?.url} alt="User avatar"></img>
           </span>
           
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
             <span className="dropdown-item">Welcome, {user?.username}</span>
             <div className="dropdown-divider" />
             <Link className="dropdown-item" to='/' onClick={logout}>Logout</Link>
@@ -33,10 +33,13 @@ function Header() {
   }
 
   return (
-    <div>
-        <Link to='/register'>Register</Link>
-        &nbsp;
-        <Link to='/login'>Login</Link>
+    <div className="mt-1 d-flex justify-content-between">
+        <h2>GLOBE ADVENTURE</h2>
+        <div>
+          <Link className='btn btn-success' to='/register'>Register</Link>
+          &nbsp;
+          <Link class='btn btn-primary' to='/login'>Login</Link>
+        </div>
     </div>
   )
 }
