@@ -20,3 +20,9 @@
 .drop-zone-text {
     margin: auto;
 }
+
+.apply-media-preview {
+    margin: 0px 2px;
+    padding: 0px 2px;
+    border: 1px dashed gray;
+}

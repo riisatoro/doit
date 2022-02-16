@@ -1,8 +1,6 @@
-from cmath import pi
-from functools import reduce
-import operator
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+
 from rest_framework.views import APIView, Response
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.pagination import LimitOffsetPagination
@@ -10,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.status import HTTP_400_BAD_REQUEST
 
 from app_utils.models import Order, OrderApplicant, MediaStorage, OrderTag
-from app_utils.serializers import OrderSerializer
+from app_utils.serializers import OrderSerializer, OrderApplicantSezializer
 from app_utils.services.cloudinary import upload_media
 
 
@@ -28,8 +26,8 @@ class OrderView(ListAPIView):
             
 
         items = self.serializer_class(queryset, many=True)
-        pinned = Order.objects.filter(applicants=self.request.user).order_by('-created_at')
-        pinned = self.serializer_class(pinned, many=True)
+        pinned = OrderApplicant.objects.filter(applicant=self.request.user).order_by('-created_at')
+        pinned = OrderApplicantSezializer(pinned, many=True)
         
         return Response({'pinned': pinned.data, 'list': items.data})
 
@@ -68,7 +66,10 @@ class SendApproveOrderView(APIView):
 
     def post(self, request, slug):
         order = get_object_or_404(Order, slug=slug)
-        application = get_object_or_404(OrderApplicant, order=order, applicant=request.user)
+        application, _ = OrderApplicant.objects.get_or_create(
+            order=order, applicant=request.user,
+            defaults={'order': order, 'applicant': request.user}
+        )
         if application.review_required():
             return Response({'detail': 'You already submited a media files'}, status=HTTP_400_BAD_REQUEST)
 

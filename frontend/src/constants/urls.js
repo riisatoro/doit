@@ -7,3 +7,4 @@ export const USER_INFO_URL = (slug) => `/user?slug=${slug}/`;
 export const ORDERS_URL = () => '/orders/';
 export const PIN_ORDER_URL = (slug) => `/orders/${slug}/pin/`;
 export const UNPIN_ORDER_URL = (slug) => `/orders/${slug}/unpin/`;
+export const SEND_MEDIA_APPROVE_URL = (slug) => `/orders/${slug}/approve/`;

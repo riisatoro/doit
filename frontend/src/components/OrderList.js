@@ -19,12 +19,14 @@ const OrderList = () => {
     }, 
     [isAuthenticated]);
 
+    console.log(ordersData.pinned)
+
     return (
         <div>
             <div className='py-3'>
                 <h3 className='border-bottom'>Pin board</h3>
                 {ordersData?.pinned?.map(
-                    (order, index) => <OrderItem key={`${index}_${order.title}`} {...{...order, index, pinned: true, fetchAllOrders}} />)} 
+                    (application, index) => <OrderItem key={`${index}_${application.order.title}`} {...{...application.order, index, fetchAllOrders, application, review_required: application.review_required}} />)} 
             </div>
             <div className='py-3'>
                 <h3 className='border-bottom'>All tasks</h3>
