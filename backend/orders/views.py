@@ -1,3 +1,4 @@
+from cmath import pi
 from functools import reduce
 import operator
 from django.shortcuts import get_object_or_404
@@ -26,18 +27,11 @@ class OrderView(ListAPIView):
             queryset = queryset.filter(tags__in=tags_query)
             
 
-        serializer = self.serializer_class(queryset, many=True)
-        page = self.paginate_queryset(serializer.data)
-        return self.get_paginated_response(page)
-
-
-class PinnedOrderView(ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = OrderSerializer
-    pagination_class = LimitOffsetPagination
-
-    def get_queryset(self):
-        return Order.objects.filter(applicants=self.request.user).order_by('-created_at')
+        items = self.serializer_class(queryset, many=True)
+        pinned = Order.objects.filter(applicants=self.request.user).order_by('-created_at')
+        pinned = self.serializer_class(pinned, many=True)
+        
+        return Response({'pinned': pinned.data, 'list': items.data})
 
 
 class SingleOrderView(RetrieveAPIView):
@@ -57,6 +51,15 @@ class ApplyToOrderView(APIView):
             return Response({'detail': 'Already applied'}, status=HTTP_400_BAD_REQUEST)
         
         OrderApplicant.objects.create(applicant=request.user, order=order)
+        return Response({'detail': 'ok'})
+
+
+class RemoveFromOrderView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, slug):
+        order = get_object_or_404(Order, slug=slug)
+        OrderApplicant.objects.filter(applicant=request.user, order=order).delete()
         return Response({'detail': 'ok'})
 
 
